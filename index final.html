@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Question For You 💗</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:#5d1935;
+  background:radial-gradient(circle at 50% 20%,#fff,#ffeaf2 45%,#ffd5e4);
+}
+.screen{display:none;min-height:100vh;align-items:center;justify-content:center;padding:22px;text-align:center}
+.screen.active{display:flex}
+.card{
+  width:min(92vw,560px);padding:38px 28px;
+  background:rgba(255,255,255,.84);border:1px solid rgba(255,255,255,.8);
+  border-radius:34px;box-shadow:0 25px 70px rgba(112,25,61,.18);
+  backdrop-filter:blur(12px);animation:pop .65s ease both
+}
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(15px)}to{opacity:1;transform:none}}
+.emoji{font-size:72px;line-height:1;margin-bottom:16px}
+h1{font-size:clamp(30px,8vw,50px);line-height:1.05;margin:8px 0 14px}
+p{font-size:18px;line-height:1.6;margin:10px auto;max-width:460px}
+button{
+  border:0;border-radius:999px;padding:15px 28px;font-size:18px;font-weight:800;
+  cursor:pointer;transition:.2s;box-shadow:0 9px 22px rgba(0,0,0,.12)
+}
+button:hover{transform:scale(1.05)}
+.primary{background:#ff4f86;color:#fff}
+.secondary{background:#f1eef0;color:#555}
+.buttons{height:135px;position:relative;margin-top:22px}
+#yesBtn{position:absolute;left:calc(50% - 125px);top:15px}
+#noBtn{position:absolute;left:calc(50% + 5px);top:15px}
+.next{margin-top:24px}
+.tiny{font-size:13px;opacity:.6;margin-top:20px}
+.bigheart{font-size:105px;animation:heartbeat .8s ease-in-out infinite alternate}
+@keyframes heartbeat{to{transform:scale(1.12)}}
+.final-message{font-size:19px}
+#hearts span,#confetti span{
+ position:fixed;pointer-events:none;z-index:10
+}
+#hearts span{bottom:-40px;font-size:24px;animation:floatUp 7s linear forwards}
+@keyframes floatUp{to{transform:translateY(-115vh) rotate(30deg);opacity:0}}
+#confetti span{top:-30px;font-size:22px;animation:fall 3.2s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.signature{font-weight:800;font-size:20px;margin-top:20px}
+</style>
+</head>
+<body>
+<div id="hearts"></div><div id="confetti"></div>
+
+<section class="screen active" id="opening">
+  <div class="card">
+    <div class="emoji">💗</div>
+    <h1>Halooo</h1>
+    <p>I have a little something to ask you.</p>
+    <p>And you have to answer honestly 👀</p>
+    <button class="primary next" onclick="show('question')">Okay, ask me →</button>
+  </div>
+</section>
+
+<section class="screen" id="question">
+  <div class="card">
+    <div class="emoji">💌</div>
+    <h1>Methdinii..Will you be my Valentineeee?</h1>
+    <p>Think carefully… there is only one correct answer 😌hodee</p>
+    <div class="buttons">
+      <button class="primary" id="yesBtn">YES 💗</button>
+      <button class="secondary" id="noBtn">NO 🙃</button>
+    </div>
+    <div class="tiny">P.S. The NO button is a little shy 😂</div>
+  </div>
+</section>
+
+<section class="screen" id="celebrate">
+  <div class="card">
+    <div class="bigheart">💖</div>
+    <h1>YAYYYYY!! 🥹</h1>
+    <p>You actually said YES! Supiri choice eka</p>
+    <p>Okay… you just made me godaaakkk happy. 💕</p>
+    <button class="primary next" onclick="show('message')">One more thing… 💌</button>
+  </div>
+</section>
+
+<section class="screen" id="message">
+  <div class="card">
+    <div class="emoji">🌹</div>
+    <h1>For My Valentine ❤️</h1>
+    <p class="final-message">
+      You just made my day. I don't need anything fancy —
+      I just wanna spend some time with u make you smile,
+      and create a few beautiful memories together. 💕I'll bully,troll and be annoying...I ain't sorry..you got that choice
+    </p>
+    <p class="final-message">No rules...Feel free to chat, call with anyone ❤️</p>
+    <div class="signature">— Your Valentine 💗SND🗿</div>
+  </div>
+</section>
+
+<script>
+const ids=["opening","question","celebrate","message"];
+function show(id){
+  ids.forEach(x=>document.getElementById(x).classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+const no=document.getElementById("noBtn");
+function moveNo(){
+  const area=document.querySelector(".buttons");
+  const maxX=Math.max(0,area.clientWidth-no.offsetWidth);
+  const maxY=Math.max(0,area.clientHeight-no.offsetHeight);
+  no.style.left=Math.random()*maxX+"px";
+  no.style.top=Math.random()*maxY+"px";
+}
+["mouseenter","pointerdown","touchstart"].forEach(e=>no.addEventListener(e,ev=>{
+  if(e!=="mouseenter")ev.preventDefault();
+  moveNo();
+}));
+no.addEventListener("click",moveNo);
+
+document.getElementById("yesBtn").addEventListener("click",()=>{
+  show("celebrate"); confetti();
+});
+
+function confetti(){
+  const box=document.getElementById("confetti");
+  const symbols=["💗","💖","💕","❤️","✨","🌸","💘"];
+  for(let i=0;i<70;i++){
+    const s=document.createElement("span");
+    s.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDelay=Math.random()*.9+"s";
+    s.style.fontSize=(16+Math.random()*18)+"px";
+    box.appendChild(s);
+    setTimeout(()=>s.remove(),4500);
+  }
+}
+setInterval(()=>{
+  const s=document.createElement("span");
+  s.textContent=["💗","💕","💖","❤️","✨"][Math.floor(Math.random()*5)];
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=(5+Math.random()*4)+"s";
+  document.getElementById("hearts").appendChild(s);
+  setTimeout(()=>s.remove(),9500);
+},650);
+</script>
+</body>
+</html>
